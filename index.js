@@ -6,7 +6,7 @@ module.exports = {
     /* Our util class for the database */
     DatabaseUtil: require('./lib/db/utils/Database.js'),
     /* Regular utils */
-    Utils: require('./lib/db/utils/Util.js')
+    
 }
 
 //This is going to import everything so that you can use it to your liking!

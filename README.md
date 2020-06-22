@@ -7,8 +7,7 @@ This database has features such as some of the following:
     This uses cache to help sort the data. 
 - Fetching Uncached data
     Fetches the uncached data and makes it cached. Easy to use
-- Custom Schemas
-    You can make your own schemas!
+
 If you would like to read the starting guide, go to the getting-started folder to get help!
 
 Here are some examples and usage of mikes-db.
@@ -40,14 +39,6 @@ Here's a little example usage
 ```
 This also imediatly sets the data to be available and cached once you fetch.
 
-# Custom Schemas
-This database also allows you to make custom schemas with the same types: 'ID': The key, 'VALUE': The data value
-Here's a little example usage
-```js
-/*Reminder this can also use the .then method as it returns a promise. We're just using async/await to make it faster!*/
-(async () =>{
-    const customSchema = await MongoDatabase.addSchema('Custom-Schema');
-    const dataSetInNewSchema = await MongoDatabase.set('hi', { world: 'hello'}, customSchema);
-    console.log(dataSetInNewSchema.world) //returns hello
-})();
-```
+# Updates
+This database updates frequently! So be sure to use the correct version for the database.
+Some features might be added/disabled but whenever we do disable or add them we will provide the reason and when!
