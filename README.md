@@ -37,5 +37,5 @@ client.connect()
 This creates a connection to mongo with your mongodb url that you've provided. Using this method triggers the `CONNECTION_CREATE` event and the `CONNECTION_FOUND` event.
 
 <h1>CONNECTION_CREATE</h1>
-Parameters: `connection`,`uri`
+Parameters: <b>connection</b> , <b>uri</b>
 
