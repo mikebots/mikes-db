@@ -13,7 +13,7 @@ import Emitter from "./interfaces/Typings/EventEmitter";
 export { Events } from "./interfaces/Typings/EventEmitter"
 export { MongoOptions } from "./interfaces/Typings/MongoOptions";
 
-export default {
+export  {
     MongoClient,
     MongoClientUtil,
     ArrayClass,

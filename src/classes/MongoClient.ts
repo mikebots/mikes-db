@@ -15,6 +15,7 @@ import ArrayClass from "./Array";
 import { DefaultModelInterface } from "../models/defaultModel";
 import Logger from "./Logger";
 import { Connection } from "mongoose";
+
 type con<T> = { -readonly [P in keyof T]: T[P] };
 /**
  * Mongo Client Class
@@ -143,11 +144,32 @@ class MongoClient extends BaseMongoClient {
         let h: V = thing.Value;
         console.log(h);
         if (this.options.cache && Boolean(options?.cache) !== false)
-          this.cache?.set(thing.Key, {
+          if(this.cache && this.options?.cacheSize && this.cache?.size < this.options?.cacheSize && Boolean(options?.cache) !== false) {
+
+           if(this.cache?.size < this.options.cacheSize) this.cache?.set(thing.Key, {
             key: thing.Key,
             value: thing.Value,
             exists: true,
           });
+          else {
+              let arr : any[] = [];
+              this.cache.forEach(c=>arr.push(c));
+              let val = arr.pop();
+              this.cache.delete(val.key);
+              this.cache.set(thing.Key, {
+                key: thing.Key,
+                value: thing.Value,
+                exists: true,
+              });
+          }
+          
+        } 
+
+        else if(this.cache && Boolean(options?.cache) !== false) this.cache.set(thing.Key, {
+          key: thing.Key,
+          value: thing.Value,
+          exists: true,
+        });
         if (
           options?.deleteAfter &&
           ["string", "number"].includes(typeof options?.deleteAfter)
@@ -176,12 +198,17 @@ class MongoClient extends BaseMongoClient {
         ) {
           setTimeout(async () => {
             await valer.deletekey(thing.Key, model);
+            this.cache?.delete(key)
           }, TNumberSpace.resolve(options?.deleteAfter));
         }
+        this.db.emit('SET', key, options?.raw ? thing : h, true)
         if (options?.raw) return thing;
         else return h;
       }
-    } else throw new Error("Could not find a model to search a key with");
+    } else {
+      this.db.emit('SET', key, value, false)
+      throw new Error("Could not find a model to search a key with");
+    }
   }
 
   public async fetch<K>(
@@ -257,8 +284,12 @@ class MongoClient extends BaseMongoClient {
           await valer.deletekey(val.key, model);
         }, TNumberSpace.resolve(options?.deleteAfter));
       }
+      this.db.emit('FETCH', key, val, true)
       return val;
-    } else throw new Error(`Could not find a model to search with`);
+    } else{
+      this.db.emit('FETCH', key, null, false)
+      throw new Error(`Could not find a model to search with`);
+    } 
   }
   public get<K>(key: K): any {
     if (!this._connected())
@@ -268,8 +299,14 @@ class MongoClient extends BaseMongoClient {
     if (["boolean", "undefined"].includes(typeof key))
       throw new TypeError(Errors.BOOLEAN_KEY);
     let data = this.cache?.get(key);
-    if (data) return data.value;
-    else return undefined;
+    if (data){
+      this.db.emit('GET', key, data.value, true)
+      return data.value;
+    }
+    else {
+      this.db.emit('GET', key, undefined, false)
+      return undefined;
+    }
   }
   /**
    * Returns an array of all the cached values

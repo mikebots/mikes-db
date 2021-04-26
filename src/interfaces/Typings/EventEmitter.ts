@@ -1,5 +1,6 @@
 import EventEmitter from "events";
 import { Connection } from "mongoose"
+import { OptionBoolean } from "../../enums/NumberBooleanStringObject";
 
 export interface Events {
     'CONNECTION_FOUND': (uri: string) => void;
@@ -15,6 +16,9 @@ export interface Events {
         },
         uri: string
     ) => void;
+    'SET': (key: any, value: any, successfull: OptionBoolean) => void;
+    'FETCH': (key: any, value: any, successfull: OptionBoolean) => void;
+    'GET': (key: any, value: any, successfull: OptionBoolean) => void;
 }
 declare interface Emitter {
     on<U extends keyof Events>(
