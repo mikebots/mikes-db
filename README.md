@@ -27,3 +27,13 @@ npm install mikes-db
     });
     client.connect() //connects to the client. A connection is needed to be able to use the set,fetch and get function
     ```
+What we just did here was make a new mongo client and connect it to be able to use the key functions.
+
+======
+
+# [Client.connect()](https://github.com/mikebots/mikes-db/blob/main/src/classes/MongoClient.ts)
+Lets talk about what this does
+```js
+client.connect()
+```
+
