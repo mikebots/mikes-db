@@ -2,8 +2,7 @@ import BaseMongoClient from "./MongoClientUtil";
 import { ClientOptions } from "../interfaces/Typings/ClientOptions";
 import {
   SetOptions,
-  DeleteOptions,
-  GetOptions,
+  
   FetchOptions,
   Raw,
 } from "../interfaces/Typings/DbOptions";

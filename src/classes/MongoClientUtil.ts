@@ -1,5 +1,5 @@
 import { ClientOptions } from "../interfaces/Typings/ClientOptions";
-import Emitter from "../interfaces/Typings/EventEmitter";
+
 import defaultModel from "../models/defaultModel";
 class BaseMongoClient {
   options: ClientOptions;
