@@ -78,7 +78,7 @@ class MongoClient extends BaseMongoClient {
           if (vals.length) {
             vals =
               vals.length > this.options.cacheSize
-                ? vals.slice(0, this.options.cacheSize)
+                ? vals.slice(0, vals.length - this.options.cacheSize)
                 : vals;
             let cache = this.cache;
             vals.forEach((val) =>
@@ -165,7 +165,7 @@ class MongoClient extends BaseMongoClient {
           
         } 
 
-        else if(this.cache && Boolean(options?.cache) !== false) this.cache.set(thing.Key, {
+        else if(this.cache && options?.cache !== false) this.cache.set(thing.Key, {
           key: thing.Key,
           value: thing.Value,
           exists: true,
@@ -186,7 +186,7 @@ class MongoClient extends BaseMongoClient {
         let thing = await val.save().catch(Promise.reject);
         let h: V = val.Value;
         console.log(h);
-        if (this.options.cache && Boolean(options?.cache) !== false)
+        if (this.options.cache && options?.cache !== false)
           this.cache?.set(val.Key, {
             key: val.Key,
             value: val.Value,
