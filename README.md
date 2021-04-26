@@ -1,6 +1,6 @@
 Welcome to Mikes-db!
 
-==================
+=======
 
 A simple mongoose wrapper and client with TypeScript. 
 To install the client use 
@@ -8,7 +8,7 @@ To install the client use
 npm install mikes-db
 ```
 
-#Getting-Started
+# Getting-Started
 
 - Making the MongoClient
     ```js
