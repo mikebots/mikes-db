@@ -1,0 +1,22 @@
+{
+  "name": "mikes-db",
+  "version": "1.0.0",
+  "description": "Simple Mongoose Wrapper",
+  "main": "./dist/index",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc && node .",
+    "start": "node ."
+  },
+  "keywords": [
+    "mongoose-wrapper",
+    "mongo-db"
+  ],
+  "author": "Mike Harrison",
+  "license": "ISC",
+  "dependencies": {
+    "@types/mongoose": "^5.10.5",
+    "@types/node": "^14.14.41",
+    "mongoose": "^5.12.5"
+  }
+}
