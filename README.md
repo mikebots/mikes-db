@@ -29,7 +29,7 @@ npm install mikes-db
     ```
 <p>What we just did here was make a new mongo client and connect it to be able to use the key functions.</p>
 
-======
+
 # [Client.connect()](https://github.com/mikebots/mikes-db/blob/main/src/classes/MongoClient.ts)
 Lets talk about what this does
 ```js
