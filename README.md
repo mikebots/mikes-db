@@ -1,7 +1,5 @@
 Welcome to Mikes-db!
-
 =======
-
 A simple mongoose wrapper and client with TypeScript. 
 To install the client use 
 ```txt 
