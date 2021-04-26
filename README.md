@@ -14,6 +14,7 @@ npm install mikes-db
     const { MongoClient } = require("mikes-db");
     //using import
     import { MongoClient } from "mikes-db"
+
     const client = new MongoClient({
         mongouri: 'mongodb://localhost/dbName', //our mongo uri but you can use any
         mongo: { //atleast one option is required
