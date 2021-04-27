@@ -30,7 +30,7 @@ npm install mikes-db
     client.on('CONNECTION_CREATE', async(connection, uri) => {
         client.logger.log('CONNECTION_CREATE', `Successfully connected to the database using ${uri}!`);
 
-        //setting data. Note: you do not need to set data in tis event. You just need to make sure you are connected
+        //setting data. Note: you do not need to set data in this event. You just need to make sure you are connected
 
         let users = [
             {
@@ -66,7 +66,7 @@ npm install mikes-db
         console.log(`Successfully set a key of: ${key} to a value of: `, value, "!");
          //Output: Successfully set a key of David to a value of: 212!
     })
-    
+
 
     client.connect(); //connects to the client. A connection is needed to be able to use the set,fetch and get function
     ```
