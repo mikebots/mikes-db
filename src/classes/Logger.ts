@@ -7,7 +7,7 @@ export default class Logger<T extends MongoClient>  {
     }
 
     log(event: Method,message?: any, ...args: any[]){
-        return console.log(`MongoClient(${event}): ${new Date(Date.now()).toISOString()} at Connection: ${this.client.options.mongouri}\n- `, message, ...args);
+        return console.log(`\nMongoClient(${event}): ${new Date(Date.now()).toISOString()} at Connection: ${this.client.options.mongouri}\n- `, message, ...args);
 
     }
 }

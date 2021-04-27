@@ -27,7 +27,7 @@ class MongoClient extends BaseMongoClient {
   private mongodb: typeof import("mongoose");
   logger?: Logger<this>;
   connection: con<Connection> | null;
-  db: Emitter;
+
 
   /**
    *
@@ -57,11 +57,11 @@ class MongoClient extends BaseMongoClient {
     this.mongodb = require("mongoose");
     this._array = new ArrayClass();
     this.logger = new Logger(this);
-    this.db = new Emitter();
+    
   }
   public async connect(): Promise<void> {
     try {
-      this.db.emit("CONNECTION_FOUND", this.options.mongouri);
+      this.emit("CONNECTION_FOUND", this.options.mongouri);
       this.connection = (
         await this.mongodb.connect(this.options.mongouri, this.options.mongo)
       ).connections[0];
@@ -92,17 +92,15 @@ class MongoClient extends BaseMongoClient {
           }
         }
       }
-      this.db.emit(
-        "CONNECTION_CREATE",
-        {
-          host: this.connection.host,
-          port: this.connection.port,
-          pass: this.connection.pass,
-          name: this.connection.name,
-          user: this.connection.user,
-        },
-        this.options?.mongouri
-      );
+      this.emit('CONNECTION_CREATE',  {
+        host: this.connection.host,
+        port: this.connection.port,
+        pass: this.connection.pass,
+        name: this.connection.name,
+        user: this.connection.user,
+      },
+      this.options?.mongouri)
+     
     } catch (error) {
       this.connection = null;
       throw error;
@@ -201,12 +199,12 @@ class MongoClient extends BaseMongoClient {
             this.cache?.delete(key)
           }, TNumberSpace.resolve(options?.deleteAfter));
         }
-        this.db.emit('SET', key, options?.raw ? thing : h, true)
+        this.emit('SET', key, options?.raw ? thing : h, true)
         if (options?.raw) return thing;
         else return h;
       }
     } else {
-      this.db.emit('SET', key, value, false)
+      this.emit('SET', key, value, false)
       throw new Error("Could not find a model to search a key with");
     }
   }
@@ -284,10 +282,10 @@ class MongoClient extends BaseMongoClient {
           await valer.deletekey(val.key, model);
         }, TNumberSpace.resolve(options?.deleteAfter));
       }
-      this.db.emit('FETCH', key, val, true)
+      this.emit('FETCH', key, val, true)
       return val;
     } else{
-      this.db.emit('FETCH', key, null, false)
+      this.emit('FETCH', key, null, false)
       throw new Error(`Could not find a model to search with`);
     } 
   }
@@ -300,11 +298,11 @@ class MongoClient extends BaseMongoClient {
       throw new TypeError(Errors.BOOLEAN_KEY);
     let data = this.cache?.get(key);
     if (data){
-      this.db.emit('GET', key, data.value, true)
+      this.emit('GET', key, data.value, true)
       return data.value;
     }
     else {
-      this.db.emit('GET', key, undefined, false)
+      this.emit('GET', key, undefined, false)
       return undefined;
     }
   }

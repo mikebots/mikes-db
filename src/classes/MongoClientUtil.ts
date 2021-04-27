@@ -1,11 +1,12 @@
 import { ClientOptions } from "../interfaces/Typings/ClientOptions";
+import Emitter from "../interfaces/Typings/EventEmitter";
 
 import defaultModel from "../models/defaultModel";
-class BaseMongoClient {
+class BaseMongoClient extends Emitter{
   options: ClientOptions;
   
   constructor(options: ClientOptions) {
-    
+    super()
     this.options = options;
   }
 
