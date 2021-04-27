@@ -4,8 +4,8 @@ export namespace valer {
   export function create(modl: any, data: any) {
     return new modl({ Key: data.key, Value: data.value, exists: true });
   }
-  export async function deletekey(key: any, model: any) {
-    return await model.deleteone({ Key: key });
+  export async function deletekey(key: any, model: typeof defaultModel) {
+    return await model.deleteOne({ Key: key });
   }
   export async function searchKey(
     key: any,

@@ -173,7 +173,7 @@ class MongoClient extends BaseMongoClient {
           ["string", "number"].includes(typeof options?.deleteAfter)
         ) {
           setTimeout(async () => {
-            await valer.deletekey(thing.Key, model);
+            if(model)await valer.deletekey(thing.Key, model);
           }, TNumberSpace.resolve(options?.deleteAfter));
         }
         if (options?.raw) return thing;
@@ -195,7 +195,7 @@ class MongoClient extends BaseMongoClient {
           typeof TNumberSpace.resolve(options?.deleteAfter) == "number"
         ) {
           setTimeout(async () => {
-            await valer.deletekey(thing.Key, model);
+            if(model) await valer.deletekey(thing.Key, model);
             this.cache?.delete(key)
           }, TNumberSpace.resolve(options?.deleteAfter));
         }
@@ -279,7 +279,7 @@ class MongoClient extends BaseMongoClient {
         typeof TNumberSpace.resolve(options?.deleteAfter) == "number"
       ) {
         setTimeout(async () => {
-          await valer.deletekey(val.key, model);
+         if(model) await valer.deletekey(val.key, model);
         }, TNumberSpace.resolve(options?.deleteAfter));
       }
       this.emit('FETCH', key, val, true)
