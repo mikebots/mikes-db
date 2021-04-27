@@ -277,6 +277,7 @@ class MongoClient extends BaseMongoClient {
       ) {
         setTimeout(async () => {
           if (model) await valer.deletekey(val.key, model);
+          
         }, TNumberSpace.resolve(options?.deleteAfter));
       }
       this.emit("FETCH", key, val, true);
@@ -305,7 +306,7 @@ class MongoClient extends BaseMongoClient {
   /**
    * Returns an array of all the cached values
    * @param {function} fn The function to fillter out values with
-   * @returns
+   * @returns {any[]}
    */
   public getAll<T>(fn?: (thisArg: T) => boolean): any[] {
     let arr: any[] = [];
@@ -322,6 +323,7 @@ class MongoClient extends BaseMongoClient {
     if (fn) return arr.filter(fn);
     return arr;
   }
+
 }
 
 export default MongoClient;
