@@ -58,11 +58,15 @@ npm install mikes-db
         let user = getUser('David').pay(100)
         await client.set(user.name, user.balance)
             .catch((err)=>console.error(err));
-        //Output: Successfully paid David an amount of 100!. Their new balace is $212
+       
         
     })
     
-
+    client.on('SET', (key, value, successfull) =>{
+        console.log(`Successfully set a key of: ${key} to a value of: `, value, "!");
+         //Output: Successfully set a key of David to a value of: 212!
+    })
+    
 
     client.connect(); //connects to the client. A connection is needed to be able to use the set,fetch and get function
     ```
