@@ -31,7 +31,7 @@ export namespace valer {
           };
         });
       else if (!single) return possibleValues.map((val) => val.Value);
-      return possibleValues[0].Value;
+      return possibleValues[0]?.Value;
     }
     if (opt?.keyType) {
       if (!["string", "object", "number"].includes(opt.keyType))
@@ -49,7 +49,7 @@ export namespace valer {
           };
         });
       if (!single) return possibleValues.map((val) => val.Value);
-      return possibleValues[0].Value;
+      return possibleValues[0]?.Value;
     }
     if(opt?.valType) {
       if (!["string", "object", "number"].includes(opt.valType))
@@ -73,7 +73,7 @@ export namespace valer {
       if (single) return await model.findOne({ Key: key });
       else return await model.find({ Key: key });
     }
-    return (await model.findOne({ Key: key, exists: true}))?.Value
+    return (await model.findOne({ Key: key, exists: true}))? (await model.findOne({ Key: key, exists: true}))?.Value : undefined
   }
 }
 

@@ -1,11 +1,6 @@
 import BaseMongoClient from "./MongoClientUtil";
 import { ClientOptions } from "../interfaces/Typings/ClientOptions";
-import {
-  SetOptions,
-  
-  FetchOptions,
-  Raw,
-} from "../interfaces/Typings/DbOptions";
+import { SetOptions, FetchOptions, Raw } from "../interfaces/Typings/DbOptions";
 
 import { Errors } from "../enums/Errors";
 import { valer } from "../interfaces/namespaces/valer";
@@ -27,7 +22,6 @@ class MongoClient extends BaseMongoClient {
   private mongodb: typeof import("mongoose");
   logger?: Logger<this>;
   connection: con<Connection> | null;
-
 
   /**
    *
@@ -57,7 +51,6 @@ class MongoClient extends BaseMongoClient {
     this.mongodb = require("mongoose");
     this._array = new ArrayClass();
     this.logger = new Logger(this);
-    
   }
   public async connect(): Promise<void> {
     try {
@@ -92,15 +85,17 @@ class MongoClient extends BaseMongoClient {
           }
         }
       }
-      this.emit('CONNECTION_CREATE',  {
-        host: this.connection.host,
-        port: this.connection.port,
-        pass: this.connection.pass,
-        name: this.connection.name,
-        user: this.connection.user,
-      },
-      this.options?.mongouri)
-     
+      this.emit(
+        "CONNECTION_CREATE",
+        {
+          host: this.connection.host,
+          port: this.connection.port,
+          pass: this.connection.pass,
+          name: this.connection.name,
+          user: this.connection.user,
+        },
+        this.options?.mongouri
+      );
     } catch (error) {
       this.connection = null;
       throw error;
@@ -142,16 +137,21 @@ class MongoClient extends BaseMongoClient {
         let h: V = thing.Value;
         console.log(h);
         if (this.options.cache && Boolean(options?.cache) !== false)
-          if(this.cache && this.options?.cacheSize && this.cache?.size < this.options?.cacheSize && Boolean(options?.cache) !== false) {
-
-           if(this.cache?.size < this.options.cacheSize) this.cache?.set(thing.Key, {
-            key: thing.Key,
-            value: thing.Value,
-            exists: true,
-          });
-          else {
-              let arr : any[] = [];
-              this.cache.forEach(c=>arr.push(c));
+          if (
+            this.cache &&
+            this.options?.cacheSize &&
+            this.cache?.size < this.options?.cacheSize &&
+            Boolean(options?.cache) !== false
+          ) {
+            if (this.cache?.size < this.options.cacheSize)
+              this.cache?.set(thing.Key, {
+                key: thing.Key,
+                value: thing.Value,
+                exists: true,
+              });
+            else {
+              let arr: any[] = [];
+              this.cache.forEach((c) => arr.push(c));
               let val = arr.pop();
               this.cache.delete(val.key);
               this.cache.set(thing.Key, {
@@ -159,21 +159,19 @@ class MongoClient extends BaseMongoClient {
                 value: thing.Value,
                 exists: true,
               });
-          }
-          
-        } 
-
-        else if(this.cache && options?.cache !== false) this.cache.set(thing.Key, {
-          key: thing.Key,
-          value: thing.Value,
-          exists: true,
-        });
+            }
+          } else if (this.cache && options?.cache !== false)
+            this.cache.set(thing.Key, {
+              key: thing.Key,
+              value: thing.Value,
+              exists: true,
+            });
         if (
           options?.deleteAfter &&
           ["string", "number"].includes(typeof options?.deleteAfter)
         ) {
           setTimeout(async () => {
-            if(model)await valer.deletekey(thing.Key, model);
+            if (model) await valer.deletekey(thing.Key, model);
           }, TNumberSpace.resolve(options?.deleteAfter));
         }
         if (options?.raw) return thing;
@@ -195,16 +193,16 @@ class MongoClient extends BaseMongoClient {
           typeof TNumberSpace.resolve(options?.deleteAfter) == "number"
         ) {
           setTimeout(async () => {
-            if(model) await valer.deletekey(thing.Key, model);
-            this.cache?.delete(key)
+            if (model) await valer.deletekey(thing.Key, model);
+            this.cache?.delete(key);
           }, TNumberSpace.resolve(options?.deleteAfter));
         }
-        this.emit('SET', key, options?.raw ? thing : h, true)
+        this.emit("SET", key, options?.raw ? thing : h, true);
         if (options?.raw) return thing;
         else return h;
       }
     } else {
-      this.emit('SET', key, value, false)
+      this.emit("SET", key, value, false);
       throw new Error("Could not find a model to search a key with");
     }
   }
@@ -236,24 +234,23 @@ class MongoClient extends BaseMongoClient {
             options?.list,
             options?.raw
           )
-        : this.cache?.get(key) ||
-          (await valer.searchKey(
+        : this.cache?.get(key)
+        ? this.cache.get(key)
+        : await valer.searchKey(
             key,
             model,
-            !options?.list?.all,
+            !(options && options.list ? options.list.all : false),
             options?.list,
             options?.raw
-          ));
+          );
       if (options?.cache || (this.cache && options?.cache != false)) {
         if (Array.isArray(val)) {
           val.forEach(async (v) => {
-            if (v.value) this.cache?.set(v.key, v);
+            if (v && v.value) this.cache?.set(v.key, v);
             else {
               let x = await model?.find();
               if (x) {
-                let value =
-                  x.find((x) => x.Value == v) ||
-                  x.find((x) => x.Value == v.value);
+                let value = x.find((x) => x.Value == v);
                 if (value)
                   this.cache?.set(value.Key, {
                     key: value.Key,
@@ -264,7 +261,7 @@ class MongoClient extends BaseMongoClient {
             }
           });
         } else {
-          if (val.value) this.cache?.set(val.key, val);
+          if (val && val.value) this.cache?.set(val.key, val);
           else {
             let x = await model?.find();
             if (x) {
@@ -279,15 +276,15 @@ class MongoClient extends BaseMongoClient {
         typeof TNumberSpace.resolve(options?.deleteAfter) == "number"
       ) {
         setTimeout(async () => {
-         if(model) await valer.deletekey(val.key, model);
+          if (model) await valer.deletekey(val.key, model);
         }, TNumberSpace.resolve(options?.deleteAfter));
       }
-      this.emit('FETCH', key, val, true)
+      this.emit("FETCH", key, val, true);
       return val;
-    } else{
-      this.emit('FETCH', key, null, false)
+    } else {
+      this.emit("FETCH", key, null, false);
       throw new Error(`Could not find a model to search with`);
-    } 
+    }
   }
   public get<K>(key: K): any {
     if (!this._connected())
@@ -297,12 +294,11 @@ class MongoClient extends BaseMongoClient {
     if (["boolean", "undefined"].includes(typeof key))
       throw new TypeError(Errors.BOOLEAN_KEY);
     let data = this.cache?.get(key);
-    if (data){
-      this.emit('GET', key, data.value, true)
+    if (data) {
+      this.emit("GET", key, data.value, true);
       return data.value;
-    }
-    else {
-      this.emit('GET', key, undefined, false)
+    } else {
+      this.emit("GET", key, undefined, false);
       return undefined;
     }
   }
